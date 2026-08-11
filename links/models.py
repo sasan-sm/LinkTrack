@@ -1,15 +1,36 @@
+import secrets
+import string
+
 from django.contrib.auth.models import User
 from django.db import models
 
 
+def generate_unique_slug():
+    chars = string.ascii_letters + string.digits
+    max_attempts = 10
+
+    for i in range (max_attempts):
+        code = ''.join(secrets.choice(chars) for _ in range(6))
+
+        if not ShortLink.objects.filter(slug=code).exists():
+            return code
+
+    return Exception("نمی‌تونم slug یکتا تولید کنم!")
+
+
 class ShortLink(models.Model):
     original_url = models.URLField()
-    slug = models.CharField(max_length=50, unique=True)
+    slug = models.CharField(max_length=50, unique=True, editable=False)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     class Meta:
         ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if not self.pk and not self.slug:
+            self.slug = generate_unique_slug()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.slug} -> {self.original_url[:30]}"
