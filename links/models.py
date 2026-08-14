@@ -30,6 +30,11 @@ class ShortLink(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk and not self.slug:
             self.slug = generate_unique_slug()
+
+        # اضافه کردن http:// اگه وجود نداشت
+        if not self.original_url.startswith(('http://', 'https://')):
+            self.original_url = 'http://' + self.original_url
+
         super().save(*args, **kwargs)
 
     def __str__(self):
