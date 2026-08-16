@@ -1,10 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>success</title>
+    <title>لینک کوتاه ساخته شد</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; text-align: center; }
+        .link-box { background: #f0f0f0; padding: 20px; border-radius: 5px; margin: 20px 0; }
+        a { color: #007bff; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
 </head>
 <body>
-    <h1>Success</h1>
+    <h1>✅ لینک کوتاه ساخته شد!</h1>
+
+    <div class="link-box">
+        <p><strong>لینک کوتاه شما:</strong></p>
+        <a href="{{ full_url }}" target="_blank">{{ full_url }}</a>
+    </div>
+
+    <p><strong>لینک اصلی:</strong> {{ shortlink.original_url }}</p>
+    <p><strong>کد کوتاه:</strong> {{ shortlink.slug }}</p>
+
+    <br>
+    <a href="{% url 'create' %}">ساخت لینک جدید</a>
 </body>
 </html>

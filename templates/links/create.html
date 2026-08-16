@@ -1,10 +1,36 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>create</title>
+    <title>ساخت لینک کوتاه</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; }
+        .form-group { margin-bottom: 15px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+        .error { color: red; font-size: 14px; }
+        .success { color: green; }
+    </style>
 </head>
 <body>
-    <h1>create</h1>
+    <h1>🔗 لینک کوتاه‌کن</h1>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="success">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.original_url.id_for_label }}">آدرس وب‌سایت:</label>
+            {{ form.original_url }}
+            {% if form.original_url.errors %}
+                <div class="error">{{ form.original_url.errors }}</div>
+            {% endif %}
+            <small>{{ form.original_url.help_text }}</small>
+        </div>
+        <button type="submit">ساخت لینک کوتاه</button>
+    </form>
 </body>
 </html>
